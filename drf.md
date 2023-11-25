@@ -126,6 +126,9 @@ Python中的反射主要借助于以下几个内置函数和特殊方法：
 
 ## 认证组件
 
+![20231120213754](https://cdn.jsdelivr.net/gh/jagger235711/coooool/img/20231120213754.png)
+![20231120224748](https://cdn.jsdelivr.net/gh/jagger235711/coooool/img/20231120224748.png)
+
   1. 局部配置
 
       在要配置认证组件的视图函数中，通过`authentication_classes = []`添加验证器
@@ -136,11 +139,20 @@ Python中的反射主要借助于以下几个内置函数和特殊方法：
   3. 配置的优先级遵从就近原则
   4. *！注意！*  认证组件为全局引用时不能写在view视图中，会出现循环引用的问题
   5. 加载认证组件，本质就是实例化每个认证类的对象，并封装到request对象
-  6. 针对面向对象中的继承这一特性，调用self属性时应该，先明确self是哪个类的对象，先从实例化的类中找，找不到再从父类中找
+  6. 针对面向对象中的继承这一特性，调用self属性时，应该先明确self是哪个类的对象，先从实例化的类中找，找不到再从父类中找
+  7. 多个认证类
 
+      都返回None，都没有认证成功->视图是否会被执行?视图函数会执行，只不过 self.user，self.auth = None
+  8. raise抛出异常，向上抛，向调用它的地方抛，没人捕获他就继续向上抛
       认证组件中的认证类配置同理
-![20231120213754](https://cdn.jsdelivr.net/gh/jagger235711/coooool/img/20231120213754.png)
-![20231120224748](https://cdn.jsdelivr.net/gh/jagger235711/coooool/img/20231120224748.png)
+  9. 返回状态码一致性
+
+      在认证类中需要配置`authenticate_header`方法，不然返回的状态码始终为403
+
+      ![20231125121536](https://cdn.jsdelivr.net/gh/jagger235711/coooool/img/20231125121536.png)
+  10. 扩展，python开发常见。子类约束
+
+      ![20231125122008](https://cdn.jsdelivr.net/gh/jagger235711/coooool/img/20231125122008.png)像是java中的接口、抽象类和抽象方法
 
 ## 一些零碎的点
 
