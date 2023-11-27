@@ -32,7 +32,7 @@ ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
     "rest_framework",
-    # "app01.apps.App01Config",
+    "app01.apps.App01Config",
     # 'django.contrib.admin',
     # 'django.contrib.auth',
     # 'django.contrib.contenttypes',
@@ -128,6 +128,8 @@ REST_FRAMEWORK = {
     "UNAUTHENTICATED_USER": None,
     "UNAUTHENTICATED_TOKEN": None,
     "DEFAULT_AUTHENTICATION_CLASSES": [
-        "ext.auth.MyAuthentication",
+        "ext.auth.QueryParamsAuthentication",
+        "ext.auth.HeaderAuthentication",
+        "ext.auth.NoAuthentication",
     ],
 }

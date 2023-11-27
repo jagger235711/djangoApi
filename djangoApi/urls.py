@@ -22,15 +22,15 @@ from app01 import views as app01_views
 
 urlpatterns = [
     # path('admin/', admin.site.urls),
-    path("auth/", app01_views.auth),
-    path("login/", app01_views.login),  # Fbv
-    
-    path("info/<str:dt>/", app01_views.InfoView.as_view()),  # Drf的CBV
-    #/user/111/ -> pk=111
-    path("user/<int:pk>/", app01_views.UserView.as_view()),  # Django原生CBV
-
-    path("authlogin/", app01_views.AuthloginView.as_view()),
-    path("authuser/", app01_views.AuthuserView.as_view()),
-    path("authorder/", app01_views.AuthorderView.as_view()),
-    
+    # path("auth/", app01_views.auth),
+    # path("login/", app01_views.login),  # Fbv
+    # path("info/<str:dt>/", app01_views.InfoView.as_view()),  # Drf的CBV
+    # #/user/111/ -> pk=111
+    # path("user/<int:pk>/", app01_views.UserView.as_view()),  # Django原生CBV
+    # path("authlogin/", app01_views.AuthloginView.as_view()),
+    # path("authuser/", app01_views.AuthuserView.as_view()),
+    # path("authorder/", app01_views.AuthorderView.as_view()),
+    path("login/", app01_views.LoginView.as_view()),
+    path("user/", app01_views.UserView.as_view()),
+    path("order/", app01_views.OrderView.as_view()),
 ]
