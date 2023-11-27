@@ -1,4 +1,4 @@
-from rest_framework.authentication import BaseAuthentication
+from rest_framework.authentication import BaseAuthentication, get_authorization_header
 from rest_framework.exceptions import AuthenticationFailed
 
 from app01 import models
@@ -20,6 +20,8 @@ class QueryParamsAuthentication(BaseAuthentication):
 class HeaderAuthentication(BaseAuthentication):
     def authenticate(self, request):
         token = request.META.get("HTTP_AUTHORIZATION")
+
+        # token = get_authorization_header(request)
         if not token:
             return
         user_obj = models.UserInfo.objects.filter(token=token).first()
