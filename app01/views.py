@@ -77,6 +77,9 @@ from app01 import models
 #     def get(self, request):
 #         return Response({"status": True, "message": "success-get AuthorderView"})
 class LoginView(APIView):
+    authentication_classes = []
+    permission_classes = []
+
     def post(self, request):
         user = request.data.get("username")
         pwd = request.data.get("password")
@@ -96,6 +99,11 @@ class UserView(APIView):
         return Response("UserView")
 
 
+# from ext.per import MyPermission
+
+
 class OrderView(APIView):
+    # permission_classes = [MyPermission]
+
     def post(self, request):
         return Response("OrderView")

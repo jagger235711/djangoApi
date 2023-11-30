@@ -153,6 +153,9 @@ Python中的反射主要借助于以下几个内置函数和特殊方法：
   10. 扩展，python开发常见。子类约束
 
       ![20231125122008](https://cdn.jsdelivr.net/gh/jagger235711/coooool/img/20231125122008.png)像是java中的接口、抽象类和抽象方法
+## 权限组件
+![20231129201910](https://cdn.jsdelivr.net/gh/jagger235711/coooool/img/20231129201910.png)
+1. 认证组件是或的关系，
 
 ## 一些零碎的点
 

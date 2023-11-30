@@ -132,4 +132,7 @@ REST_FRAMEWORK = {
         "ext.auth.HeaderAuthentication",
         "ext.auth.NoAuthentication",
     ],
+    "DEFAULT_PERMISSION_CLASSES": [
+        "ext.per.MyPermission",
+    ],
 }
