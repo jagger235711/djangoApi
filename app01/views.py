@@ -104,6 +104,16 @@ class UserView(APIView):
 
 class OrderView(APIView):
     # permission_classes = [MyPermission]
+    def check_permissions(self, request):
+        for permission in self.get_permissions():
+            if permission.has_permission(request, self):
+                return
+        else:
+            self.permission_denied(
+                request,
+                message=getattr(permission, "message", None),
+                code=getattr(permission, "code", None),
+            )
 
     def post(self, request):
         return Response("OrderView")
