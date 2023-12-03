@@ -166,7 +166,9 @@ Python中的反射主要借助于以下几个内置函数和特殊方法：
     - 接下来再分析流程
     1. 思考2
     - 通过组建的生命周期来分析它们的关系
-    - ![20231203160039](https://cdn.jsdelivr.net/gh/jagger235711/coooool/img/20231203160039.png)    
+    - ![20231203160039](https://cdn.jsdelivr.net/gh/jagger235711/coooool/img/20231203160039.png) 
+## 限流组件
+![20231204010724](https://cdn.jsdelivr.net/gh/jagger235711/coooool/img/20231204010724.png)    
 ## 一些零碎的点
 
 1. 创建django项目时，通过指定目录可以将项目创建在当前目录而不是当前目录的子目录
