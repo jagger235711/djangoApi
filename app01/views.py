@@ -134,9 +134,21 @@ class OrderView(UserView):
     def post(self, request):
         return Response("OrderView")
 
-
+from rest_framework.request import Request
 class AvatarView(UserView):
     permission_classes = [UserPermission, ManagerPermission]
 
     def post(self, request):
         return Response("AvatarView")
+
+    def initialize_request(self, request, *args, **kwargs):
+        super().initialize_request(request, *args, **kwargs)
+        parser_context = self.get_parser_context(request)
+        print("MyResuest")
+        return Request(
+            request,
+            parsers=self.get_parsers(),
+            authenticators=self.get_authenticators(),
+            negotiator=self.get_content_negotiator(),
+            parser_context=parser_context,
+        )
