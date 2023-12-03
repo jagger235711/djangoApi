@@ -8,6 +8,8 @@ from rest_framework.decorators import api_view
 from rest_framework.views import APIView
 from app01 import models
 
+from ext.per import UserPermission, ManagerPermission, BossPermission
+
 # Create your views here.
 
 
@@ -95,6 +97,19 @@ class LoginView(APIView):
 
 
 class UserView(APIView):
+    permission_classes = [UserPermission, ManagerPermission, BossPermission]
+
+    def check_permissions(self, request):  # 修改权限认证为“或”关系
+        for permission in self.get_permissions():
+            if permission.has_permission(request, self):
+                return
+        else:
+            self.permission_denied(
+                request,
+                message=getattr(permission, "message", None),
+                code=getattr(permission, "code", None),
+            )
+
     def post(self, request):
         return Response("UserView")
 
@@ -102,9 +117,10 @@ class UserView(APIView):
 # from ext.per import MyPermission
 
 
-class OrderView(APIView):
-    # permission_classes = [MyPermission]
-    def check_permissions(self, request):
+class OrderView(UserView):
+    permission_classes = [ManagerPermission, BossPermission]
+
+    def check_permissions(self, request):  # 修改权限认证为“或”关系
         for permission in self.get_permissions():
             if permission.has_permission(request, self):
                 return
@@ -117,3 +133,10 @@ class OrderView(APIView):
 
     def post(self, request):
         return Response("OrderView")
+
+
+class AvatarView(UserView):
+    permission_classes = [UserPermission, ManagerPermission]
+
+    def post(self, request):
+        return Response("AvatarView")

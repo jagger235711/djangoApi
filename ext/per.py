@@ -33,3 +33,30 @@ class MyPermission3(BasePermission):
         if v1 == 2:
             return True
         return False
+
+
+class UserPermission(BasePermission):
+    # 员工权限校验
+    message = {"status": False, "msg": "非员工，无员工权限"}
+
+    def has_permission(self, request, view):
+        if request.user.role == 3:
+            return True
+        return False
+class ManagerPermission(BasePermission):
+    # 员工权限校验
+    message = {"status": False, "msg": "非员工，无员工权限"}
+
+    def has_permission(self, request, view):
+        if request.user.role == 2:
+            return True
+        return False
+class BossPermission(BasePermission):
+    # 员工权限校验
+    message = {"status": False, "msg": "非员工，无员工权限"}
+
+    def has_permission(self, request, view):
+        if request.user.role == 1:
+            return True
+        return False
+

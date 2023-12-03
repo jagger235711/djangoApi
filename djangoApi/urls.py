@@ -33,4 +33,5 @@ urlpatterns = [
     path("login/", app01_views.LoginView.as_view()),
     path("user/", app01_views.UserView.as_view()),
     path("order/", app01_views.OrderView.as_view()),
+    path("avatar/", app01_views.AvatarView.as_view()),
 ]
