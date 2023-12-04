@@ -10,6 +10,8 @@ from app01 import models
 
 from ext.per import UserPermission, ManagerPermission, BossPermission
 
+from ext.throttle import MyThrottle
+
 # Create your views here.
 
 
@@ -81,6 +83,7 @@ from ext.per import UserPermission, ManagerPermission, BossPermission
 class LoginView(APIView):
     authentication_classes = []
     permission_classes = []
+    throttle_classes = [MyThrottle]
 
     def post(self, request):
         user = request.data.get("username")
@@ -134,7 +137,10 @@ class OrderView(UserView):
     def post(self, request):
         return Response("OrderView")
 
+
 from rest_framework.request import Request
+
+
 class AvatarView(UserView):
     permission_classes = [UserPermission, ManagerPermission]
 

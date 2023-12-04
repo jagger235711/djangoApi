@@ -169,6 +169,8 @@ Python中的反射主要借助于以下几个内置函数和特殊方法：
     - ![20231203160039](https://cdn.jsdelivr.net/gh/jagger235711/coooool/img/20231203160039.png) 
 ## 限流组件
 ![20231204010724](https://cdn.jsdelivr.net/gh/jagger235711/coooool/img/20231204010724.png)    
+
+![20231204233010](https://cdn.jsdelivr.net/gh/jagger235711/coooool/img/20231204233010.png)
 ## 一些零碎的点
 
 1. 创建django项目时，通过指定目录可以将项目创建在当前目录而不是当前目录的子目录
@@ -236,3 +238,7 @@ Python中的反射主要借助于以下几个内置函数和特殊方法：
     request.data#获取请求体中的参数
     request.query_params#获取请求头中的参数
     ```
+6. 连接docker里的redis
+   - 创建容器时要记得映射端口，不然宿主机访问不到容器内部
+   - ```docker run -d -p 6379:6379 --name redis_container redis ```创建容器的命令，关键在设置端口映射
+   - 通过`docker exec -it <容器id或名称> /bin/bash`进入容器并打开交互式终端
