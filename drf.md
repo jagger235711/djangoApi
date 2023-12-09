@@ -173,6 +173,8 @@ Python中的反射主要借助于以下几个内置函数和特殊方法：
 ![20231204233010](https://cdn.jsdelivr.net/gh/jagger235711/coooool/img/20231204233010.png)
 
 ![20231207215346](https://cdn.jsdelivr.net/gh/jagger235711/coooool/img/20231207215346.png)
+
+![20231209190708](https://cdn.jsdelivr.net/gh/jagger235711/coooool/img/20231209190708.png)
 ## 一些零碎的点
 
 1. 创建django项目时，通过指定目录可以将项目创建在当前目录而不是当前目录的子目录

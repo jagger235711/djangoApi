@@ -10,7 +10,7 @@ from app01 import models
 
 from ext.per import UserPermission, ManagerPermission, BossPermission
 
-from ext.throttle import MyThrottle
+from ext.throttle import MyThrottle, IpThrottle, UserThrottle
 
 # Create your views here.
 
@@ -83,7 +83,7 @@ from ext.throttle import MyThrottle
 class LoginView(APIView):
     authentication_classes = []
     permission_classes = []
-    throttle_classes = [MyThrottle]
+    throttle_classes = [IpThrottle]
 
     def post(self, request):
         user = request.data.get("username")
@@ -123,17 +123,6 @@ class UserView(APIView):
 class OrderView(UserView):
     permission_classes = [ManagerPermission, BossPermission]
 
-    def check_permissions(self, request):  # 修改权限认证为“或”关系
-        for permission in self.get_permissions():
-            if permission.has_permission(request, self):
-                return
-        else:
-            self.permission_denied(
-                request,
-                message=getattr(permission, "message", None),
-                code=getattr(permission, "code", None),
-            )
-
     def post(self, request):
         return Response("OrderView")
 
@@ -142,7 +131,8 @@ from rest_framework.request import Request
 
 
 class AvatarView(UserView):
-    permission_classes = [UserPermission, ManagerPermission]
+    permission_classes = [UserPermission, BossPermission]
+    throttle_classes = [UserThrottle]
 
     def post(self, request):
         return Response("AvatarView")
@@ -158,3 +148,13 @@ class AvatarView(UserView):
             negotiator=self.get_content_negotiator(),
             parser_context=parser_context,
         )
+
+    def throttled(self, request, wait):
+        raise Throttled(wait)
+
+
+from rest_framework import exceptions
+
+
+class Throttled(exceptions.Throttled):
+    default_detail = "666!Request was throttled."

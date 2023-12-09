@@ -147,4 +147,8 @@ REST_FRAMEWORK = {
     "DEFAULT_PERMISSION_CLASSES": [
         "ext.per.MyPermission",
     ],
+    "DEFAULT_THROTTLE_RATES": {
+        "ip": "10/m",
+        "user": "5/m",
+    },
 }
