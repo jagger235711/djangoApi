@@ -33,6 +33,7 @@ ALLOWED_HOSTS = []
 INSTALLED_APPS = [
     "rest_framework",
     "app01.apps.App01Config",
+    "api.apps.ApiConfig",
     # 'django.contrib.admin',
     # 'django.contrib.auth',
     # 'django.contrib.contenttypes',
@@ -136,19 +137,23 @@ CACHES = {
     }
 }
 
+
 REST_FRAMEWORK = {
     "UNAUTHENTICATED_USER": None,
     "UNAUTHENTICATED_TOKEN": None,
-    "DEFAULT_AUTHENTICATION_CLASSES": [
-        "ext.auth.QueryParamsAuthentication",
-        "ext.auth.HeaderAuthentication",
-        "ext.auth.NoAuthentication",
-    ],
-    "DEFAULT_PERMISSION_CLASSES": [
-        "ext.per.MyPermission",
-    ],
+    # "DEFAULT_AUTHENTICATION_CLASSES": [
+    #     "ext.auth.QueryParamsAuthentication",
+    #     "ext.auth.HeaderAuthentication",
+    #     "ext.auth.NoAuthentication",
+    # ],
+    # "DEFAULT_PERMISSION_CLASSES": [
+    #     "ext.per.MyPermission",
+    # ],
     "DEFAULT_THROTTLE_RATES": {
         "ip": "10/m",
         "user": "5/m",
     },
+    "VERSION_PARAM": "version",
+    "DEFAULT_VERSION": "v1",
+    "ALLOWED_VERSIONS": ["v1", "v2"],
 }

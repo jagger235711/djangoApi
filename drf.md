@@ -175,6 +175,20 @@ Python中的反射主要借助于以下几个内置函数和特殊方法：
 ![20231207215346](https://cdn.jsdelivr.net/gh/jagger235711/coooool/img/20231207215346.png)
 
 ![20231209190708](https://cdn.jsdelivr.net/gh/jagger235711/coooool/img/20231209190708.png)
+
+![20231209194805](https://cdn.jsdelivr.net/gh/jagger235711/coooool/img/20231209194805.png)
+
+## day14
+![20231210092657](https://cdn.jsdelivr.net/gh/jagger235711/coooool/img/20231210092657.png)
+
+### 版本组件
+1. 基于get参数
+   - 对视图类配置```versioning_class```参数为类引入版本组件
+   - 可以通过在settings.py配置 ```VERSION_PARAM```参数自定义在请求参数中代表版本的key名
+   - 通过配置settings.py可以配置默认版本号、允许版本号
+   - 反向生成url
+     - 相比django原生的reverse，versioning_reverse可以生成版本号，会带上request中的版本号
+
 ## 一些零碎的点
 
 1. 创建django项目时，通过指定目录可以将项目创建在当前目录而不是当前目录的子目录
@@ -246,3 +260,33 @@ Python中的反射主要借助于以下几个内置函数和特殊方法：
    - 创建容器时要记得映射端口，不然宿主机访问不到容器内部
    - ```docker run -d -p 6379:6379 --name redis_container redis ```创建容器的命令，关键在设置端口映射
    - 通过`docker exec -it <容器id或名称> /bin/bash`进入容器并打开交互式终端
+## 常见报错
+
+1. ```Model class django.contrib.contenttypes.models.ContentType doesn't declare an explicit app_label and isn't in an application in INSTALLED_APPS.```
+   
+   - 认证组件中的匿名用户导致了这个问题
+   - 当没找到用户时会执行```_not_authenticated```方法。其中：
+      ```python
+     def _not_authenticated(self):
+        """
+        Set authenticator, user & authtoken representing an unauthenticated request.
+
+        Defaults are None, AnonymousUser & None.
+        """
+        self._authenticator = None
+
+        if api_settings.UNAUTHENTICATED_USER:
+            self.user = api_settings.UNAUTHENTICATED_USER()
+        else:
+            self.user = None
+
+        if api_settings.UNAUTHENTICATED_TOKEN:
+            self.auth = api_settings.UNAUTHENTICATED_TOKEN()
+        else:
+            self.auth = None
+      ```
+        调用```self.user = api_settings.UNAUTHENTICATED_USER()```和```self.auth = api_settings.UNAUTHENTICATED_TOKEN()```方法时会用到django中的一些组件，如果没有启用这些组件就会报错。
+    - 解决方案
+  
+        直接设置```UNAUTHENTICATED_USER```和```UNAUTHENTICATED_TOKEN```为空，这样就不会走到为真的分支里
+
