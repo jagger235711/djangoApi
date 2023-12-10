@@ -187,8 +187,9 @@ Python中的反射主要借助于以下几个内置函数和特殊方法：
    - 可以通过在settings.py配置 ```VERSION_PARAM```参数自定义在请求参数中代表版本的key名
    - 通过配置settings.py可以配置默认版本号、允许版本号
    - 反向生成url
-     - 相比django原生的reverse，versioning_reverse可以生成版本号，会带上request中的版本号
-
+     - 相比django原生的reverse，versioning_reverse可以生成版本号，会自动生成版本信息
+2. 基于路由url
+   - 修改路由path，在其中加上```version```参数,传递到视图类后可以通过版本组件方便的获取版本信息
 ## 一些零碎的点
 
 1. 创建django项目时，通过指定目录可以将项目创建在当前目录而不是当前目录的子目录
