@@ -38,4 +38,5 @@ urlpatterns = [
     # __________________apiview______________________
     path("home/", api_views.HomeView.as_view()),
     path("api/<str:version>/home2/", api_views.Home2View.as_view(),name="h2"),
+    path("home3/", api_views.Home3View.as_view()),
 ]

@@ -2,7 +2,11 @@ from django.shortcuts import render
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.request import Request
-from rest_framework.versioning import QueryParameterVersioning, URLPathVersioning
+from rest_framework.versioning import (
+    QueryParameterVersioning,
+    URLPathVersioning,
+    AcceptHeaderVersioning,
+)
 
 
 # Create your views here.
@@ -21,4 +25,13 @@ class Home2View(APIView):
     def get(self, request, *args, **kwargs):
         print(request.version)
         print(request.versioning_scheme.reverse("h2", request=request))
+        return Response({"message": "Hello, world!H2"})
+
+
+class Home3View(APIView):
+    versioning_class = AcceptHeaderVersioning
+
+    def get(self, request, *args, **kwargs):
+        print(request.version)
+        # print(request.versioning_scheme.reverse("h2", request=request))
         return Response({"message": "Hello, world!H2"})
