@@ -7,16 +7,24 @@ from rest_framework.versioning import (
     URLPathVersioning,
     AcceptHeaderVersioning,
 )
+from rest_framework.parsers import JSONParser, FormParser
+from rest_framework.negotiation import DefaultContentNegotiation
 
 
 # Create your views here.
 class HomeView(APIView):
     versioning_class = QueryParameterVersioning
+    parser_classes = [JSONParser, FormParser]
+    content_negotiation_class = DefaultContentNegotiation
 
     def get(self, request):
         print(request.version)
         print(request.versioning_scheme.reverse("order", request=request))
         return Response({"message": "Hello, world!"})
+
+    def post(self, request):
+        print(request.data, type(request.data))
+        return Response({"message": "Hello, world!from post"})
 
 
 class Home2View(APIView):

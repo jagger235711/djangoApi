@@ -194,12 +194,16 @@ Python中的反射主要借助于以下几个内置函数和特殊方法：
 2. 基于路由url
    - 使用```URLPathVersioning```作为版本类
    - 修改路由path，在其中加上```version```参数,传递到视图类后可以通过版本组件方便的获取版本信息
-3. 基于accept请求头
+3. **基于accept请求头**
    - 使用```AcceptVersioning```作为版本类
    - 修改请求头，在请求头中增加```version```参数,传递到视图类后可以通过版本组件方便的获取版本信息
 4. 通过在settings.py配置```DEFAULT_VERSIONING_CLASS```参数可以设置默认版本类
 
 ### 解析器
+![20231211235122](https://cdn.jsdelivr.net/gh/jagger235711/coooool/img/20231211235122.png)
+   1. 用于解析请求者发过来的数据（JSON）
+   2. 主要针对请求体进行解析，请求头中的数据已经被```request.queryparam```读取走了 
+   3. ```parser_classes```配置应用的所有解析器，```content_negotiation_class```根据请求调用对应解析器
 
 ## 一些零碎的点
 
