@@ -201,9 +201,10 @@ Python中的反射主要借助于以下几个内置函数和特殊方法：
 
 ### 解析器
 ![20231211235122](https://cdn.jsdelivr.net/gh/jagger235711/coooool/img/20231211235122.png)
-   1. 用于解析请求者发过来的数据（JSON）
+   1. 用于解析请求者发过来的数据（JSON等）
    2. 主要针对请求体进行解析，请求头中的数据已经被```request.queryparam```读取走了 
    3. ```parser_classes```配置应用的所有解析器，```content_negotiation_class```根据请求调用对应解析器
+   4. 所有数据都会存到```request```中，但不会进行解析，调用request.data获取解析后的数据,同一个request只加载一次，再次调用直接去```full_data```中拿
 
 ## 一些零碎的点
 
