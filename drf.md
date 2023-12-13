@@ -205,7 +205,10 @@ Python中的反射主要借助于以下几个内置函数和特殊方法：
    2. 主要针对请求体进行解析，请求头中的数据已经被```request.queryparam```读取走了 
    3. ```parser_classes```配置应用的所有解析器，```content_negotiation_class```根据请求调用对应解析器
    4. 所有数据都会存到```request```中，但不会进行解析，调用request.data获取解析后的数据,同一个request只加载一次，再次调用直接去```full_data```中拿
-
+   5. 文件解析器
+        - ```fileUploadParser```只能上传文件
+        - ```MultiPartParser```可以上传文件和数据
+    6. 当不配置解析器时，系统默认的解析器是```fileUploadParser```之外的三个。通过配置```DEFAULT_PARSER_CLASSES```可以修改默认解析器
 ## 一些零碎的点
 
 1. 创建django项目时，通过指定目录可以将项目创建在当前目录而不是当前目录的子目录
