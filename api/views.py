@@ -9,6 +9,9 @@ from rest_framework.versioning import (
 )
 from rest_framework.parsers import JSONParser, FormParser
 from rest_framework.negotiation import DefaultContentNegotiation
+from rest_framework import serializers
+
+from api import models
 
 
 # Create your views here.
@@ -43,3 +46,15 @@ class Home3View(APIView):
         print(request.version)
         # print(request.versioning_scheme.reverse("h2", request=request))
         return Response({"message": "Hello, world!H2"})
+
+
+class DepartSerializer(serializers.Serializer):
+    title = serializers.CharField()
+    count = serializers.IntegerField()
+
+
+class DepartView(APIView):
+    def get(self, request, *args, **kwargs):
+        depart_obj = models.Depart.objects.all().first()
+        ser = DepartSerializer(depart_obj)
+        return Response(ser.data)

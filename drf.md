@@ -200,7 +200,7 @@ Python中的反射主要借助于以下几个内置函数和特殊方法：
 4. 通过在settings.py配置```DEFAULT_VERSIONING_CLASS```参数可以设置默认版本类
 
 ### 解析器
-![20231211235122](https://cdn.jsdelivr.net/gh/jagger235711/coooool/img/20231211235122.png)
+![20231213203759](https://cdn.jsdelivr.net/gh/jagger235711/coooool/img/20231213203759.png)
    1. 用于解析请求者发过来的数据（JSON等）
    2. 主要针对请求体进行解析，请求头中的数据已经被```request.queryparam```读取走了 
    3. ```parser_classes```配置应用的所有解析器，```content_negotiation_class```根据请求调用对应解析器
@@ -208,7 +208,22 @@ Python中的反射主要借助于以下几个内置函数和特殊方法：
    5. 文件解析器
         - ```fileUploadParser```只能上传文件
         - ```MultiPartParser```可以上传文件和数据
-    6. 当不配置解析器时，系统默认的解析器是```fileUploadParser```之外的三个。通过配置```DEFAULT_PARSER_CLASSES```可以修改默认解析器
+   6. 当不配置解析器时，系统默认的解析器是```fileUploadParser```之外的三个。通过配置```DEFAULT_PARSER_CLASSES```可以修改默认解析器
+
+### 元类
+![20231213204827](https://cdn.jsdelivr.net/gh/jagger235711/coooool/img/20231213204827.png)
+![20231216084635](https://cdn.jsdelivr.net/gh/jagger235711/coooool/img/20231216084635.png)
+![20231216185636](https://cdn.jsdelivr.net/gh/jagger235711/coooool/img/20231216185636.png)
+![20231217150508](https://cdn.jsdelivr.net/gh/jagger235711/coooool/img/20231217150508.png)
+![20231217152512](https://cdn.jsdelivr.net/gh/jagger235711/coooool/img/20231217152512.png)
+![20231217152928](https://cdn.jsdelivr.net/gh/jagger235711/coooool/img/20231217152928.png)
+- 两种创建类的方式，底层都是通过调用type类中的```new()```函数创建类，再调用```init()```方法对类进行初始化
+- 创建和初始化的操作都是通过调用```type```类的```call()```方法来触发的 
+- 通过向类传入```metaclass```参数可以指定元类
+- 关于子类
+  - 类中获取父类中指定了metaclass，全部都是由metaclass创建的类
+### 序列化器(*)
+
 ## 一些零碎的点
 
 1. 创建django项目时，通过指定目录可以将项目创建在当前目录而不是当前目录的子目录
@@ -218,7 +233,6 @@ Python中的反射主要借助于以下几个内置函数和特殊方法：
     ```
 
     在表示相对路径中，单点表示当前目录，双点表示上一级目录，反斜杠“/”表示分隔目录；
-
     相对路径特殊符号有以下几种表示意义：
 
     - 以“./”开头，代表当前目录和文件目录在同一个目录里，“./”也可以省略不写！
