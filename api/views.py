@@ -53,8 +53,46 @@ class DepartSerializer(serializers.Serializer):
     count = serializers.IntegerField()
 
 
+class DepartModelSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.Depart
+        fields = "__all__"
+
+
 class DepartView(APIView):
     def get(self, request, *args, **kwargs):
-        depart_obj = models.Depart.objects.all().first()
-        ser = DepartSerializer(depart_obj)
-        return Response(ser.data)
+        querySet = models.Depart.objects.all()
+        ser = DepartSerializer(querySet, many=True)
+        context = {"status": True, "data": ser.data}
+        return Response(context)
+
+    def post(self, request, *args, **kwargs):
+        querySet = models.Depart.objects.all()
+        ser = DepartModelSerializer(querySet, many=True)
+        context = {"status": True, "data": ser.data}
+        return Response(context)
+
+
+class UserSerializer(serializers.Serializer):
+    title = serializers.CharField()
+    count = serializers.IntegerField()
+
+
+class UserModelSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.UserInfo
+        fields = "__all__"
+
+
+class UserView(APIView):
+    def get(self, request, *args, **kwargs):
+        querySet = models.UserInfo.objects.all()
+        ser = DepartSerializer(querySet, many=True)
+        context = {"status": True, "data": ser.data}
+        return Response(context)
+
+    def post(self, request, *args, **kwargs):
+        querySet = models.UserInfo.objects.all()
+        ser = UserModelSerializer(querySet, many=True)
+        context = {"status": True, "data": ser.data}
+        return Response(context)

@@ -42,4 +42,6 @@ urlpatterns = [
     
     path("api/<str:version>/depart/", api_views.DepartView.as_view(),name="depart"),
     
+    path("api/<str:version>/user/", api_views.UserView.as_view(),name="user"),
+    
 ]
