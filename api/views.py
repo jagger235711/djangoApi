@@ -79,6 +79,10 @@ class UserSerializer(serializers.Serializer):
 
 
 class UserModelSerializer(serializers.ModelSerializer):
+    gender_test = serializers.CharField(source="get_gender_display")
+    depart = serializers.CharField(source="depart.title")
+    ctime = serializers.DateTimeField(format="%Y-%m-%d %H:%M:%S")
+
     class Meta:
         model = models.UserInfo
         fields = "__all__"
