@@ -82,10 +82,14 @@ class UserModelSerializer(serializers.ModelSerializer):
     gender_test = serializers.CharField(source="get_gender_display")
     depart = serializers.CharField(source="depart.title")
     ctime = serializers.DateTimeField(format="%Y-%m-%d %H:%M:%S")
+    MyFun = serializers.SerializerMethodField()
 
     class Meta:
         model = models.UserInfo
         fields = "__all__"
+
+    def get_MyFun(self, obj):
+        return "hello"
 
 
 class UserView(APIView):

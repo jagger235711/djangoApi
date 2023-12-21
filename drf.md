@@ -228,6 +228,7 @@ Python中的反射主要借助于以下几个内置函数和特殊方法：
 3. ```serializers.ModelSerializer```类比Django中form和ModelForm的功能，用于快速创建序列化器，同时也可以和modelForm一样，对字段进行自定义```gender_text=serializers.CharField(source="get_gender_display")```
  - 通过```source```字段指定字段来源，可以是字段也可以是函数
  - 通过```format```字段指定字段格式，如```format="%Y-%m-%d %H:%M:%S"```
+4. 通过```MyFun = serializers.SerializerMethodField()```自定义方法。通过```get_MyFun()```方法获取返回值，其中的```obj```对象即为这个序列化器定义的类对象 
 
 ## 一些零碎的点
 
