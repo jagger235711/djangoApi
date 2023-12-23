@@ -18,3 +18,8 @@ class UserInfo(models.Model):
     )
     depart = models.ForeignKey(verbose_name="部门", to="Depart", on_delete=models.CASCADE)
     ctime = models.DateTimeField(verbose_name="时间", auto_now_add=True)
+    tags = models.ManyToManyField(verbose_name="标签", to="Tag")
+
+
+class Tag(models.Model):
+    caption = models.CharField(verbose_name="标签", max_length=32)

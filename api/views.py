@@ -78,18 +78,32 @@ class UserSerializer(serializers.Serializer):
     count = serializers.IntegerField()
 
 
+class TagsSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.Tag
+        fields = "__all__"
+
+
 class UserModelSerializer(serializers.ModelSerializer):
     gender_test = serializers.CharField(source="get_gender_display")
     depart = serializers.CharField(source="depart.title")
     ctime = serializers.DateTimeField(format="%Y-%m-%d %H:%M:%S")
-    MyFun = serializers.SerializerMethodField()
+    # MyFunction = serializers.SerializerMethodField()
+    # 嵌套
+    tags = TagsSerializer(many=True)
 
     class Meta:
         model = models.UserInfo
         fields = "__all__"
 
-    def get_MyFun(self, obj):
-        return "hello"
+    # def get_MyFunction(self, obj):
+    #     queryset = obj.tags.all()
+    #     # result = []
+    #     # for tag in queryset:
+    #     #     result.append({"id": tag.id, "caption": tag.caption})
+    #     # 推导式
+    #     result = [{"id": tag.id, "caption": tag.caption} for tag in queryset]
+    #     return result
 
 
 class UserView(APIView):
