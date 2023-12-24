@@ -233,8 +233,14 @@ Python中的反射主要借助于以下几个内置函数和特殊方法：
 4. 通过```MyFun = serializers.SerializerMethodField()```自定义方法。通过```get_MyFun()```方法获取返回值，其中的```obj```对象即为这个序列化器定义的类对象。通过它可以实现多对多关系字段的获取等自定义操作
 5. 嵌套(类里面的字段是另一个序列化的类)，针对：fk、m2m、
 6. 继承 序列化器类可以单独使用，也可以继承其他的序列化器类
-
-
+7. 序列化源码流程
+    ![20231223213658](https://cdn.jsdelivr.net/gh/jagger235711/coooool/img/20231223213658.png)
+    ![20231223214331](https://cdn.jsdelivr.net/gh/jagger235711/coooool/img/20231223214331.png)
+    - 类创建时，类的参数要先于类进行创建，因为类要通过`MyType()`进行创建，类的参数要传入`MyType()`中
+        ![20231223215301](https://cdn.jsdelivr.net/gh/jagger235711/coooool/img/20231223215301.png)
+    - `Field`类中的`creation_counter`字段的作用是让后续开发时，根据编写顺序来定义后续源码中各个字段处理顺序。
+    - ![20231224202906](https://cdn.jsdelivr.net/gh/jagger235711/coooool/img/20231224202906.png)
+         
 ## 一些零碎的点
 
 1. 创建django项目时，通过指定目录可以将项目创建在当前目录而不是当前目录的子目录
