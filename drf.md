@@ -244,7 +244,14 @@ Python中的反射主要借助于以下几个内置函数和特殊方法：
 8. 数据校验
    -  ![20231230183415](https://cdn.jsdelivr.net/gh/jagger235711/coooool/img/20231230183415.png)
    -  ![20231230183512](https://cdn.jsdelivr.net/gh/jagger235711/coooool/img/20231230183512.png)
-         
+## day15 drf下篇
+![20240101093200](https://cdn.jsdelivr.net/gh/jagger235711/coooool/img/20240101093200.png)
+
+1. 序列化器
+![20240101094631](https://cdn.jsdelivr.net/gh/jagger235711/coooool/img/20240101094631.png)
+   1. 序列化 
+   2. 数据校验
+      1. 创建序列化对象时，序列化使用`serializer = MySerializer(instance=obj)`，校验使用`serializer = MySerializer(data=data)`
 ## 一些零碎的点
 
 1. 创建django项目时，通过指定目录可以将项目创建在当前目录而不是当前目录的子目录

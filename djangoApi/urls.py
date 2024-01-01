@@ -37,11 +37,10 @@ urlpatterns = [
     path("avatar/", app01_views.AvatarView.as_view()),
     # __________________apiview______________________
     path("home/", api_views.HomeView.as_view()),
-    path("api/<str:version>/home2/", api_views.Home2View.as_view(),name="h2"),
+    path("api/<str:version>/home2/", api_views.Home2View.as_view(), name="h2"),
     path("home3/", api_views.Home3View.as_view()),
-    
-    path("api/<str:version>/depart/", api_views.DepartView.as_view(),name="depart"),
-    
-    path("api/<str:version>/user/", api_views.UserView.as_view(),name="user"),
-    
+    # path("api/<str:version>/depart/", api_views.DepartView.as_view(), name="depart"),
+    # path("api/<str:version>/user/", api_views.UserView.as_view(), name="user"),
+    # ——————————————————day15——————————————————————
+    path("api/<str:version>/depart/", api_views.DepartView.as_view(), name="depart"),
 ]

@@ -48,29 +48,29 @@ class Home3View(APIView):
         return Response({"message": "Hello, world!H2"})
 
 
-class DepartSerializer(serializers.Serializer):
-    title = serializers.CharField()
-    count = serializers.IntegerField()
+# class DepartSerializer(serializers.Serializer):
+#     title = serializers.CharField()
+#     count = serializers.IntegerField()
 
 
-class DepartModelSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = models.Depart
-        fields = "__all__"
+# class DepartModelSerializer(serializers.ModelSerializer):
+#     class Meta:
+#         model = models.Depart
+#         fields = "__all__"
 
 
-class DepartView(APIView):
-    def get(self, request, *args, **kwargs):
-        querySet = models.Depart.objects.all()
-        ser = DepartSerializer(querySet, many=True)
-        context = {"status": True, "data": ser.data}
-        return Response(context)
+# class DepartView(APIView):
+#     def get(self, request, *args, **kwargs):
+#         querySet = models.Depart.objects.all()
+#         ser = DepartSerializer(querySet, many=True)
+#         context = {"status": True, "data": ser.data}
+#         return Response(context)
 
-    def post(self, request, *args, **kwargs):
-        querySet = models.Depart.objects.all()
-        ser = DepartModelSerializer(querySet, many=True)
-        context = {"status": True, "data": ser.data}
-        return Response(context)
+#     def post(self, request, *args, **kwargs):
+#         querySet = models.Depart.objects.all()
+#         ser = DepartModelSerializer(querySet, many=True)
+#         context = {"status": True, "data": ser.data}
+#         return Response(context)
 
 
 class UserSerializer(serializers.Serializer):
@@ -106,15 +106,46 @@ class UserModelSerializer(serializers.ModelSerializer):
     #     return result
 
 
-class UserView(APIView):
-    def get(self, request, *args, **kwargs):
-        querySet = models.UserInfo.objects.all()
-        ser = DepartSerializer(querySet, many=True)
-        context = {"status": True, "data": ser.data}
-        return Response(context)
+# class UserView(APIView):
+#     def get(self, request, *args, **kwargs):
+#         querySet = models.UserInfo.objects.all()
+#         ser = DepartSerializer(querySet, many=True)
+#         context = {"status": True, "data": ser.data}
+#         return Response(context)
+
+#     def post(self, request, *args, **kwargs):
+#         querySet = models.UserInfo.objects.all()
+#         ser = UserModelSerializer(querySet, many=True)
+#         context = {"status": True, "data": ser.data}
+#         return Response(context)
+
+
+class DepartSerializer(serializers.Serializer):
+    username = serializers.CharField(required=True)
+    password = serializers.CharField(required=True)
+
+
+# class DepartModelSerializer(serializers.ModelSerializer):
+#     class Meta:
+#         model = models.Depart
+#         fields = "__all__"
+
+
+class DepartView(APIView):
+    # def get(self, request, *args, **kwargs):
+    #     querySet = models.Depart.objects.all()
+    #     ser = DepartSerializer(querySet, many=True)
+    #     context = {"status": True, "data": ser.data}
+    #     return Response(context)
 
     def post(self, request, *args, **kwargs):
-        querySet = models.UserInfo.objects.all()
-        ser = UserModelSerializer(querySet, many=True)
-        context = {"status": True, "data": ser.data}
-        return Response(context)
+        # 1.获取原始数据
+        # 2.校验
+        ser = DepartSerializer(data=request.data)
+        # if ser.is_valid():
+        #     print(ser.validated_data)
+        # else:
+        #     print(ser.errors)
+        ser.is_valid(raise_exception=True)
+        print(ser.validated_data)
+        return Response("...")
