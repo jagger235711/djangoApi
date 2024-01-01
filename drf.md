@@ -251,12 +251,21 @@ Python中的反射主要借助于以下几个内置函数和特殊方法：
 ![20240101094631](https://cdn.jsdelivr.net/gh/jagger235711/coooool/img/20240101094631.png)
    1. 序列化 
    2. 数据校验
-      1. 创建序列化对象时，序列化使用`serializer = MySerializer(instance=obj)`，校验使用`serializer = MySerializer(data=data)`
-      2. 基本校验、内置校验、正则校验、钩子校验-适用于复杂校验
-      3. 序列化的钩子方法使用`get_xxx()`。校验的钩子方法使用`validate_xxx()`，
-      4. 校验所有字段用`validate()`方法，其在调用完单个字段的校验后，会自动调用`validate()`方法。
-      5. 全局校验适用于一些单个字段校验通过了，但是额外附加条件不通过的情况。这种校验也可以在业务代码中做
-      6. 通过在`settings`中设置`non_field_errors_key`可以修改全局报错的key
+        ### serializer
+         1. 创建序列化对象时，序列化使用`serializer = MySerializer(instance=obj)`，校验使用`serializer = MySerializer(data=data)`
+         2. 基本校验、内置校验、正则校验、钩子校验-适用于复杂校验
+         3. 序列化的钩子方法使用`get_xxx()`。校验的钩子方法使用`validate_xxx()`，
+         4. 校验所有字段用`validate()`方法，其在调用完单个字段的校验后，会自动调用`validate()`方法。
+         5. 全局校验适用于一些单个字段校验通过了，但是额外附加条件不通过的情况。这种校验也可以在业务代码中做
+         6. 通过在`settings`中设置`non_field_errors_key`可以修改全局报错的key
+        ### modelSerializer
+        1. 通过在`meta`类中配置`extra_kwargs`来添加额外校验
+        2. 帮助我们将数据直接保存到数据库
+           
+           可能会出现校验通过但是不能保存的情况
+           
+           1. 传过来的数据少于数据库要求的数据。`.save()`方法中可以传额外的参数，会一同保存到数据库中 
+           2. 传过来的数据多于数据库要求的数据。先进行`ser.validated_data.pop("字段名")`剔除额外参数，再`save`
 ## 一些零碎的点
 
 1. 创建django项目时，通过指定目录可以将项目创建在当前目录而不是当前目录的子目录

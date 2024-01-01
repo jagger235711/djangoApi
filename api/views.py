@@ -138,18 +138,34 @@ class DepartSerializer(serializers.Serializer):
         raise exceptions.ValidationError("全局钩子，自定义错误")
 
 
-# class DepartModelSerializer(serializers.ModelSerializer):
-#     class Meta:
-#         model = models.Depart
-#         fields = "__all__"
+class DepartModelSerializer(serializers.ModelSerializer):
+    more = serializers.CharField(required=True)
+
+    class Meta:
+        model = models.Depart
+        fields = "__all__"
+        # extra_kwargs = {
+        #     "title": {"max_length": 5, "min_length": 1},
+        #     "order": {"min_value": 5},
+        #     "count": {"validators": [RegexValidator(r"\d+", message="请输入数字")]},
+        # }
 
 
 class DepartView(APIView):
-    # def get(self, request, *args, **kwargs):
-    #     querySet = models.Depart.objects.all()
-    #     ser = DepartSerializer(querySet, many=True)
-    #     context = {"status": True, "data": ser.data}
-    #     return Response(context)
+    def get(self, request, *args, **kwargs):
+        # 1.获取原始数据
+        # 2.校验
+        ser = DepartModelSerializer(data=request.data)
+        if ser.is_valid():
+            print(ser.validated_data)
+            ser.validated_data.pop("more")
+            print(ser.validated_data)
+            ser.save()
+        else:
+            print(ser.errors)
+        # ser.is_valid(raise_exception=True)
+        # print(ser.validated_data)
+        return Response("...")
 
     def post(self, request, *args, **kwargs):
         # 1.获取原始数据
