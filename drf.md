@@ -239,7 +239,11 @@ Python中的反射主要借助于以下几个内置函数和特殊方法：
     - 类创建时，类的参数要先于类进行创建，因为类要通过`MyType()`进行创建，类的参数要传入`MyType()`中
         ![20231223215301](https://cdn.jsdelivr.net/gh/jagger235711/coooool/img/20231223215301.png)
     - `Field`类中的`creation_counter`字段的作用是让后续开发时，根据编写顺序来定义后续源码中各个字段处理顺序。
-    - ![20231224202906](https://cdn.jsdelivr.net/gh/jagger235711/coooool/img/20231224202906.png)
+    - ![20231230182858](https://cdn.jsdelivr.net/gh/jagger235711/coooool/img/20231230182858.png)
+    - ![20231230182921](https://cdn.jsdelivr.net/gh/jagger235711/coooool/img/20231230182921.png)
+8. 数据校验
+   -  ![20231230183415](https://cdn.jsdelivr.net/gh/jagger235711/coooool/img/20231230183415.png)
+   -  ![20231230183512](https://cdn.jsdelivr.net/gh/jagger235711/coooool/img/20231230183512.png)
          
 ## 一些零碎的点
 
