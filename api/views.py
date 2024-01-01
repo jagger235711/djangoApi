@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from rest_framework.views import APIView
+from rest_framework import exceptions
 from rest_framework.response import Response
 from rest_framework.request import Request
 from rest_framework.versioning import (
@@ -119,10 +120,22 @@ class UserModelSerializer(serializers.ModelSerializer):
 #         context = {"status": True, "data": ser.data}
 #         return Response(context)
 
+from django.core.validators import RegexValidator
+
 
 class DepartSerializer(serializers.Serializer):
     username = serializers.CharField(required=True)
-    password = serializers.CharField(required=True)
+    password = serializers.CharField(required=True, max_length=16, min_length=6)
+    email = serializers.CharField(validators=[RegexValidator(r"\d+", message="请输入数字")])
+
+    def validate_email(self, value):
+        print(value)
+        if len(value) > 6:
+            raise exceptions.ValidationError("邮箱长度不能超过6位")
+        return value
+
+    def validate(self, attrs):
+        raise exceptions.ValidationError("全局钩子，自定义错误")
 
 
 # class DepartModelSerializer(serializers.ModelSerializer):
@@ -142,10 +155,10 @@ class DepartView(APIView):
         # 1.获取原始数据
         # 2.校验
         ser = DepartSerializer(data=request.data)
-        # if ser.is_valid():
-        #     print(ser.validated_data)
-        # else:
-        #     print(ser.errors)
-        ser.is_valid(raise_exception=True)
-        print(ser.validated_data)
+        if ser.is_valid():
+            print(ser.validated_data)
+        else:
+            print(ser.errors)
+        # ser.is_valid(raise_exception=True)
+        # print(ser.validated_data)
         return Response("...")
