@@ -178,3 +178,31 @@ class DepartView(APIView):
         # ser.is_valid(raise_exception=True)
         # print(ser.validated_data)
         return Response("...")
+
+
+class UsModelSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.UserInfo
+        fields = ["gender", "name", "age", "depart", "tags"]
+
+    def validate_depart(self, value):
+        print(value)
+        if value.id > 1:
+            return value
+        else:
+            raise serializers.ValidationError("部门不存在")
+
+
+class UsView(APIView):
+    def post(self, request, *args, **kwargs):
+        # 1.获取原始数据
+        # 2.校验
+        ser = UsModelSerializer(data=request.data)
+        if ser.is_valid():
+            print(ser.validated_data)
+            ser.save()
+        else:
+            print(ser.errors)
+        # ser.is_valid(raise_exception=True)
+        # print(ser.validated_data)
+        return Response("...")
