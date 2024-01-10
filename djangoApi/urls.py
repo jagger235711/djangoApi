@@ -44,4 +44,7 @@ urlpatterns = [
     # ——————————————————day15——————————————————————
     path("api/<str:version>/depart/", api_views.DepartView.as_view(), name="depart"),
     path("api/<str:version>/us/", api_views.UsView.as_view()),
+    path("api/<str:version>/dp/", api_views.DpView.as_view()),
+    path("api/<str:version>/uus/", api_views.UusView.as_view()),
+    
 ]

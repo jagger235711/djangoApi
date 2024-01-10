@@ -206,3 +206,76 @@ class UsView(APIView):
         # ser.is_valid(raise_exception=True)
         # print(ser.validated_data)
         return Response("...")
+
+
+class DpModelSerializer(serializers.ModelSerializer):
+    # more = serializers.CharField(required=True)
+
+    class Meta:
+        model = models.Depart
+        fields = "__all__"
+        # extra_kwargs = {
+
+
+class Dp2ModelSerializer(serializers.ModelSerializer):
+    more = serializers.CharField(required=True)
+
+    class Meta:
+        model = models.Depart
+        fields = ["order", "title", "count"]
+
+
+class DpView(APIView):
+    def post(self, request, *args, **kwargs):
+        ser = DpModelSerializer(data=request.data)
+        if ser.is_valid():
+            instance = ser.save()
+            xx = Dp2ModelSerializer(instance=instance)
+            print(instance)
+            return Response(xx.data)
+        else:
+            print(ser.errors)
+            return Response(ser.errors)
+
+
+class UuusModelSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.Depart
+        fields = "__all__"
+
+
+class UusModelSerializer(serializers.ModelSerializer):
+    # more = serializers.CharField(required=True)
+    gender_info = serializers.CharField(source="get_gender_display", read_only=True)
+    v1 = serializers.SerializerMethodField()
+    v2 = UuusModelSerializer(read_only=True, source="depart")
+
+    class Meta:
+        model = models.UserInfo
+        fields = ["id", "name", "age", "depart", "gender", "gender_info", "v1", "v2"]
+        extra_kwargs = {"id": {"read_only": True}, "gender": {"write_only": True}}
+
+    def get_v1(self, obj):
+        return {"v1": obj.id}
+
+
+# class UusView(APIView):
+#     def post(self, request, *args, **kwargs):
+#         ser = UusModelSerializer(data=request.data)
+#         if ser.is_valid():
+#             instance = ser.save()
+#             xx = UusModelSerializer(instance=instance)
+#             print(instance)
+#             return Response(xx.data)
+#         else:
+#             print(ser.errors)
+#             return Response(ser.errors)
+class UusView(APIView):
+    def post(self, request, *args, **kwargs):
+        ser = UusModelSerializer(data=request.data)
+        if ser.is_valid():
+            ser.save()
+            return Response(ser.data)
+        else:
+            print(ser.errors)
+            return Response(ser.errors)
