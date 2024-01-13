@@ -46,5 +46,7 @@ urlpatterns = [
     path("api/<str:version>/us/", api_views.UsView.as_view()),
     path("api/<str:version>/dp/", api_views.DpView.as_view()),
     path("api/<str:version>/uus/", api_views.UusView.as_view()),
+    # --------------------需求-----------------------
     
+    path("api/<str:version>/nb/", api_views.NbView.as_view()),
 ]

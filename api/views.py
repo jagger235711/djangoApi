@@ -279,3 +279,44 @@ class UusView(APIView):
         else:
             print(ser.errors)
             return Response(ser.errors)
+
+
+class NbField(serializers.IntegerField):
+    def __init__(self, method_name=None, **kwargs):
+        self.method_name = method_name
+        super().__init__(**kwargs)
+
+    def bind(self, field_name, parent):
+        if self.method_name is None:
+            self.method_name = "xget_{field_name}".format(field_name=field_name)
+        super().bind(field_name, parent)
+
+    def get_attribute(self, instance):
+        method = getattr(self.parent, self.method_name)
+        return method(instance)
+
+    def to_representation(self, value):
+        return str(value)
+
+
+class NbModelSerializer(serializers.ModelSerializer):
+    gender = NbField()
+
+    class Meta:
+        model = models.NbUserInfo
+        fields = "__all__"
+        extra_kwargs = {"age": {"write_only": True}}
+
+    def xget_gender(self, obj):
+        return obj.get_gender_display()
+
+
+class NbView(APIView):
+    def post(self, request, *args, **kwargs):
+        ser = NbModelSerializer(data=request.data)
+        if ser.is_valid():
+            ser.save()
+            return Response(ser.data)
+        else:
+            print(ser.errors)
+            return Response(ser.errors)

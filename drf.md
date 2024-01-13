@@ -281,7 +281,12 @@ Python中的反射主要借助于以下几个内置函数和特殊方法：
               1. 通过只读、只写可以控制传参字段、返回值字段
               2. 通过钩子方法可以达到同样效果
               3. 通过序列化器的嵌套也可以达到该效果，比如M2M，把id传给内层序列化器，返回所有信息
-   
+   ### 需求
+    ![20240113115046](https://cdn.jsdelivr.net/gh/jagger235711/coooool/img/20240113115046.png)
+    #### 实现方法1
+    1. 因为使用`serializers.SerializerMethodField()`自定义方法时，需要自己定义一个字段，用钩子方法来处理。在字段内部限制了`read_only=True`，所以没有办法通过请求时输入这个字段的值来实现【无法输入】
+    2. 通过`serializers.CharField(source="get_gender_display")`添加source，实现自动映射。但是需求要求输入和输出的字段名一致，这会导致无法自动映射【无法映射】
+    3. 所以通过继承field，自定义方法来实现![20240113145228](https://cdn.jsdelivr.net/gh/jagger235711/coooool/img/20240113145228.png)
 ## 一些零碎的点
 
 1. 创建django项目时，通过指定目录可以将项目创建在当前目录而不是当前目录的子目录

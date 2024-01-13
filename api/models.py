@@ -23,3 +23,12 @@ class UserInfo(models.Model):
 
 class Tag(models.Model):
     caption = models.CharField(verbose_name="标签", max_length=32)
+
+
+class NbUserInfo(models.Model):
+    name = models.CharField(verbose_name="姓名", max_length=32)
+    age = models.IntegerField(verbose_name="年龄")
+
+    gender = models.CharField(
+        verbose_name="性别", choices=(("1", "男"), ("2", "女")), max_length=8
+    )
