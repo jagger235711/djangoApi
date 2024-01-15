@@ -1,3 +1,4 @@
+from collections import OrderedDict
 from django.shortcuts import render
 from rest_framework.views import APIView
 from rest_framework import exceptions
@@ -314,6 +315,71 @@ class NbModelSerializer(serializers.ModelSerializer):
 class NbView(APIView):
     def post(self, request, *args, **kwargs):
         ser = NbModelSerializer(data=request.data)
+        if ser.is_valid():
+            ser.save()
+            return Response(ser.data)
+        else:
+            print(ser.errors)
+            return Response(ser.errors)
+
+
+from rest_framework.fields import SkipField
+from rest_framework.relations import PKOnlyObject
+
+
+class SbModelSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.NbUserInfo
+        fields = "__all__"
+        extra_kwargs = {"age": {"write_only": True}}
+
+    def to_representation(self, instance):
+        super().to_representation(instance)
+        ret = OrderedDict()
+        fields = self._readable_fields
+
+        for field in fields:
+            # 自定义字段映射
+            if hasattr(self, "sb_%s" % field.field_name):
+                value = getattr(self, "sb_%s" % field.field_name)(instance)
+                ret[field.field_name] = value
+            else:
+                try:
+                    attribute = field.get_attribute(instance)
+                except SkipField:
+                    continue
+
+                check_for_none = (
+                    attribute.pk if isinstance(attribute, PKOnlyObject) else attribute
+                )
+                if check_for_none is None:
+                    ret[field.field_name] = None
+                else:
+                    ret[field.field_name] = field.to_representation(attribute)
+
+        return ret
+
+    def sb_gender(self, obj):
+        return obj.get_gender_display()
+
+
+from ext.hook import HookSerializer
+
+
+class SsbModelSerializer(HookSerializer, serializers.ModelSerializer):
+    class Meta:
+        model = models.NbUserInfo
+        fields = "__all__"
+        extra_kwargs = {"age": {"write_only": True}}
+
+    def sb_gender(self, obj):
+        print("Ssb_gender")
+        return obj.get_gender_display()
+
+
+class SbView(APIView):
+    def post(self, request, *args, **kwargs):
+        ser = SsbModelSerializer(data=request.data)
         if ser.is_valid():
             ser.save()
             return Response(ser.data)

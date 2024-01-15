@@ -49,4 +49,5 @@ urlpatterns = [
     # --------------------需求-----------------------
     
     path("api/<str:version>/nb/", api_views.NbView.as_view()),
+    path("api/<str:version>/sb/", api_views.SbView.as_view()),
 ]
