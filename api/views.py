@@ -122,12 +122,18 @@ class CommentSerializer(HookSerializer, serializers.ModelSerializer):
     class Meta:
         model = models.Comment
         fields = ["id", "content", "user"]
+        extra_kwargs = {"id": {"read_only": True}, "user": {"read_only": True}}
 
     def sb_user(self, obj):
         return {"username": obj.user.username, "id": obj.user.id}
 
 
+from ext.auth import BlogAuthentication
+
+
 class CommentView(APIView):
+    authentication_classes = [BlogAuthentication]
+
     def get(self, request, *args, **kwargs):
         """获取博客详情"""
         blog_id = kwargs.get("blog_id")
@@ -135,6 +141,20 @@ class CommentView(APIView):
         ser = CommentSerializer(instance=querySet, many=True)
         context = {"code": 200, "msg": "ok", "data": ser.data}
         return Response(context)
+
+    def post(self, request, *args, **kwargs):
+        """创建评论"""
+        if not request.user:
+            return Response({"code": 400, "msg": "未登录"})
+        blog_id = kwargs.get("blog_id")
+        blog_object = models.Blog.objects.filter(id=blog_id).first()
+        if not blog_object:
+            return Response({"code": 400, "msg": "博客不存在"})
+        ser = CommentSerializer(data=request.data)
+        if not ser.is_valid():
+            return Response({"code": 400, "msg": "参数错误", "error": ser.errors})
+        ser.save(user=request.user, blog=blog_object)
+        return Response({"code": 200, "msg": "ok", "data": ser.data})
 
 
 class RegisterSerializer(serializers.ModelSerializer):

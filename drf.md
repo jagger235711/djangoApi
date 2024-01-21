@@ -295,9 +295,13 @@ Python中的反射主要借助于以下几个内置函数和特殊方法：
       1. 继承时，写在前面的优先
       2. 可以继承多个类
 ### 案例：博客系统
+
 ![20240115232001](https://cdn.jsdelivr.net/gh/jagger235711/coooool/img/20240115232001.png)
 #### 功能
+
 ![20240118005904](https://cdn.jsdelivr.net/gh/jagger235711/coooool/img/20240118005904.png)
+
+![20240121212310](https://cdn.jsdelivr.net/gh/jagger235711/coooool/img/20240121212310.png)
 ## 一些零碎的点
 
 1. 创建django项目时，通过指定目录可以将项目创建在当前目录而不是当前目录的子目录
