@@ -26,4 +26,5 @@ urlpatterns = [
     # path("api/comment/", views.BlogDetailView.as_view()),#?blog_id=1
     path("api/comment/<int:blog_id>/", views.CommentView.as_view()),
     path("api/register/", views.RegisterView.as_view()),
+    path("api/login/", views.LoginView.as_view()),
 ]

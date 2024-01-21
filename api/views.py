@@ -1,3 +1,4 @@
+import uuid
 from django.http import HttpResponse
 from django.shortcuts import render
 from api import models
@@ -176,4 +177,31 @@ class RegisterView(APIView):
             ser.validated_data.pop("confirm_password")
             ser.save()
             content = {"code": 200, "msg": "ok", "data": ser.data}
+        return Response(content)
+
+
+class LoginSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.UserInfo
+        # 字段执行顺序与fields定义顺序一致
+        fields = [
+            "username",
+            "password",
+        ]
+
+
+class LoginView(APIView):
+    def post(self, request, *args, **kwargs):
+        """登陆"""
+        ser = LoginSerializer(data=request.data)
+        if not ser.is_valid():
+            content = {"code": 400, "msg": "校验失败", "errors": ser.errors}
+            return Response(content)
+        instance = models.UserInfo.objects.filter(**ser.validated_data).first()
+        if not instance:
+            return Response({"code": 400, "msg": "用户名或密码错误"})
+        token = str(uuid.uuid4())
+        instance.token = token
+        instance.save()
+        content = {"code": 200, "msg": "登陆成功", "token": instance.token}
         return Response(content)
