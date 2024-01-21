@@ -20,6 +20,9 @@ from api import views
 
 urlpatterns = [
     # path('admin/', admin.site.urls),
-    # path("db/", views.db),
+    path("db/", views.db),
     path("api/blog/", views.BlogView.as_view()),
+    path("api/blog/<int:pk>/", views.BlogDetailView.as_view()),
+    # path("api/comment/", views.BlogDetailView.as_view()),#?blog_id=1
+    path("api/comment/<int:blog_id>/",  views.CommentView.as_view()),
 ]
