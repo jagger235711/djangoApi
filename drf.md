@@ -301,6 +301,8 @@ Python中的反射主要借助于以下几个内置函数和特殊方法：
 
 ![20240118005904](https://cdn.jsdelivr.net/gh/jagger235711/coooool/img/20240118005904.png)
 
+![20240128183816](https://cdn.jsdelivr.net/gh/jagger235711/coooool/img/20240128183816.png)
+
 ![20240121212310](https://cdn.jsdelivr.net/gh/jagger235711/coooool/img/20240121212310.png)
 ## 一些零碎的点
 

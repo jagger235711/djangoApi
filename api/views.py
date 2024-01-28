@@ -6,6 +6,8 @@ from rest_framework.views import APIView
 from rest_framework import serializers
 from rest_framework.response import Response
 
+from ext.hook import HookSerializer
+
 # Create your views here.
 
 
@@ -42,15 +44,16 @@ def db(request):
     return HttpResponse("ok")
 
 
-class BlogSerializer(serializers.ModelSerializer):
-    category = serializers.CharField(source="get_category_display")
-    ctime = serializers.DateTimeField(format="%Y-%m-%d")
-    creator = serializers.SerializerMethodField()
+class BlogSerializer(HookSerializer, serializers.ModelSerializer):
+    # category = serializers.CharField(source="get_category_display")
+    ctime = serializers.DateTimeField(format="%Y-%m-%d", read_only=True)
+    creator = serializers.SerializerMethodField(read_only=True)
 
     class Meta:
         model = models.Blog
         # fields = "__all__"
         fields = [
+            "id",
             "category",
             "image",
             "title",
@@ -59,10 +62,19 @@ class BlogSerializer(serializers.ModelSerializer):
             "comment_count",
             "favor_count",
             "creator",
+            "text"
         ]
+        extra_kwargs = {
+            "comment_count": {"read_only": True},
+            "favor_count": {"read_only": True},
+            "text": {"write_only": True},
+        }
 
     def get_creator(self, obj):
         return {"username": obj.creator.username, "id": obj.creator.id}
+
+    def sb_category(self, obj):
+        return obj.get_category_display()
 
 
 class BlogView(APIView):
@@ -73,9 +85,19 @@ class BlogView(APIView):
         context = {"code": 200, "msg": "ok", "data": ser.data}
         return Response(context)
 
-    # def post(self, request, *args, **kwargs):
-    #     blog = models.Blog.objects.create(**request.data)
-    #     return Response(blog.values())
+    def post(self, request, *args, **kwargs):
+        # 新增博客
+        if not request.user:
+            context = {"code": 400, "msg": "用户未登录"}
+            return Response(context)
+        ser = BlogSerializer(data=request.data)
+        if ser.is_valid():
+            ser.save(creator=request.user)
+            context = {"code": 200, "msg": "ok", "data": ser.data}
+            return Response(context)
+        else:
+            context = {"code": 400, "msg": "fail", "data": ser.errors}
+            return Response(context)
 
 
 class BlogDetailSerializer(serializers.ModelSerializer):
@@ -111,9 +133,6 @@ class BlogDetailView(APIView):
         ser = BlogDetailSerializer(instance=instance, many=False)
         context = {"code": 200, "msg": "ok", "data": ser.data}
         return Response(context)
-
-
-from ext.hook import HookSerializer
 
 
 class CommentSerializer(HookSerializer, serializers.ModelSerializer):
