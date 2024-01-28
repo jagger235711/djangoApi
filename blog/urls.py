@@ -27,4 +27,6 @@ urlpatterns = [
     path("api/comment/<int:blog_id>/", views.CommentView.as_view()),
     path("api/register/", views.RegisterView.as_view()),
     path("api/login/", views.LoginView.as_view()),
+    
+    path("api/favor/", views.FavorView.as_view()),
 ]

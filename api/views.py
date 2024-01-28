@@ -128,14 +128,14 @@ class CommentSerializer(HookSerializer, serializers.ModelSerializer):
         return {"username": obj.user.username, "id": obj.user.id}
 
 
-from ext.auth import BlogAuthentication
+from ext.auth import BlogAuthentication, NoAuthentication
 
 
 class CommentView(APIView):
     authentication_classes = [BlogAuthentication]
 
     def get(self, request, *args, **kwargs):
-        """获取博客详情"""
+        """获取评论列表"""
         blog_id = kwargs.get("blog_id")
         querySet = models.Comment.objects.filter(blog_id=blog_id)
         ser = CommentSerializer(instance=querySet, many=True)
@@ -225,3 +225,28 @@ class LoginView(APIView):
         instance.save()
         content = {"code": 200, "msg": "登陆成功", "token": instance.token}
         return Response(content)
+
+
+class FavorSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.Favor
+        # 字段执行顺序与fields定义顺序一致
+        fields = ["blog"]
+
+
+class FavorView(APIView):
+    authentication_classes = [BlogAuthentication, NoAuthentication]
+
+    def post(self, request, *args, **kwargs):
+        # 先找博客是否存在
+        ser = FavorSerializer(data=request.data)
+        if not ser.is_valid():
+            return Response({"code": 400, "msg": "校验失败", "errors": ser.errors})
+        # 再看该用户是否给这个博客点赞了
+        exists = models.Favor.objects.filter(
+            user=request.user, blog=ser.validated_data["blog"]
+        ).exists()
+        if exists:
+            return Response({"code": 400, "msg": "已经点赞过了"})
+        ser.save(user=request.user)
+        return Response({"code": 200, "msg": "点赞成功", "data": ser.data})
