@@ -283,13 +283,13 @@ Python中的反射主要借助于以下几个内置函数和特殊方法：
               3. 通过序列化器的嵌套也可以达到该效果，比如M2M，把id传给内层序列化器，返回所有信息
     ### 需求
     ![20240113115046](https://cdn.jsdelivr.net/gh/jagger235711/coooool/img/20240113115046.png)
-    #### 实现方法1
+    #### *实现方法1*
     1. 因为使用`serializers.SerializerMethodField()`自定义方法时，需要自己定义一个字段，用钩子方法来处理。在字段内部限制了`read_only=True`，所以没有办法通过请求时输入这个字段的值来实现【无法输入】
     2. 通过`serializers.CharField(source="get_gender_display")`添加source，实现自动映射。但是需求要求输入和输出的字段名一致，这会导致无法自动映射【无法映射】
     3. 所以通过继承field，自定义方法来实现
    ![20240114113138](https://cdn.jsdelivr.net/gh/jagger235711/coooool/img/20240114113138.png)
    ![20240113145228](https://cdn.jsdelivr.net/gh/jagger235711/coooool/img/20240113145228.png)
-   #### 实现方法2
+   #### 实现方法2（更好 ）
    1. 重写`to_representation()`方法, 实现对字段的处理
    2. 可以自己写一个类实现这个方法，用的话直接继承就行
       1. 继承时，写在前面的优先
@@ -304,6 +304,13 @@ Python中的反射主要借助于以下几个内置函数和特殊方法：
 ![20240128183816](https://cdn.jsdelivr.net/gh/jagger235711/coooool/img/20240128183816.png)
 
 ![20240121212310](https://cdn.jsdelivr.net/gh/jagger235711/coooool/img/20240121212310.png)
+
+### 课程中的闪光点
+1. 权限校验的自定义。由且的关系变为或
+2. 序列化与映射的二合一，传入传出同名字段冲突问题的解决
+
+### 案例二：分页
+![20240128191815](https://cdn.jsdelivr.net/gh/jagger235711/coooool/img/20240128191815.png)
 ## 一些零碎的点
 
 1. 创建django项目时，通过指定目录可以将项目创建在当前目录而不是当前目录的子目录
